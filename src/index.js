@@ -1,9 +1,39 @@
-var http = require("http");
+const express = require("express");
+const path = require("path");
+const bodyParser = require("body-parser");
+const session = require("express-session");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const errorHandler = require("errorhandler");
 
-//create a server object:
-http
-  .createServer(function(req, res) {
-    res.write("Hello World!"); //write a response to the client
-    res.end(); //end the response
+/**Configure mongoose's promise to global promise */
+mongoose.promise = global.Promise;
+
+/** Configure isProduction variable */
+
+const isProduction = process.env.NODE_ENV === "production";
+
+/** Initiate our app */
+const app = express();
+/** Configure our app */
+app.use(cors());
+app.use(require("morgan")("dev"));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "public")));
+app.use(
+  session({
+    secret: "passport-tutorial",
+    cookie: { maxAge: 60000 },
+    resave: false,
+    saveUninitialized: false
   })
-  .listen(8080); //the server object listens on port 8080
+);
+
+if (!isProduction) app.use(errorHandler);
+
+/** Configure mongoose */
+mongoose.connect("mongodb://localhost/passport-tutorial");
+mongoose.set("debug", true);
+
+/** Error handlers & middleware */
