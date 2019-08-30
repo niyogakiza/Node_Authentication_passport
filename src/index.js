@@ -35,5 +35,3 @@ if (!isProduction) app.use(errorHandler);
 /** Configure mongoose */
 mongoose.connect("mongodb://localhost/passport-tutorial");
 mongoose.set("debug", true);
-
-/** Error handlers & middleware */
