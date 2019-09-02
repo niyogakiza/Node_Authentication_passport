@@ -6,6 +6,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const errorHandler = require("errorhandler");
 
+// https://medium.com/signature-networks/learn-how-to-handle-authentication-with-node-using-passport-js-4a56ed18e81e
 /**Configure mongoose's promise to global promise */
 mongoose.promise = global.Promise;
 
