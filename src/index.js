@@ -35,3 +35,31 @@ if (!isProduction) app.use(errorHandler);
 /** Configure mongoose */
 mongoose.connect("mongodb://localhost/passport-tutorial");
 mongoose.set("debug", true);
+
+/**Error handlers & middleware */
+if (!isProduction) {
+  app.use((err, req, res) => {
+    res.status(err.status || 500);
+
+    res.json({
+      errors: {
+        message: err.message,
+        error: err
+      }
+    });
+  });
+}
+
+app.use((err, req, res) => {
+  res.status(err.status || 500);
+  res.json({
+    errors: {
+      message: err.message,
+      errors: {}
+    }
+  });
+});
+
+app.listen(8000, () =>
+  console.log("Server is running on http://localhost:8000/")
+);
